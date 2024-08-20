@@ -1,0 +1,1 @@
+export const WSS_URL = "http://localhost:3001";
