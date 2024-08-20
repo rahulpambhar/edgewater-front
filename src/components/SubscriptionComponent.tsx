@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "../context";
+import {products} from "../initials";
 
 const SubscriptionComponent: React.FC = () => {
-    const products: string[] = ["BTC-USD", "ETH-USD", "LTC-USD"];
     const { subscribedProducts, unsubscribe, subscribe }: any = useContext(MyContext);
-    const [isConnected, setIsConnected] = useState(true); // Example connection status
+    const [isConnected, setIsConnected] = useState(true); 
 
     const handleSubscribe = (product: string) => {
         if (!subscribedProducts.includes(product)) {
