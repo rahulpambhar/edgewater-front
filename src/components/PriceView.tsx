@@ -2,23 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { TableRow, TableHeaderCell, TableHeader, TableCell, TableBody, Table, } from 'semantic-ui-react'
 import { MyContext } from "../context";
 
-
-
 interface PriceViewProps {
     ws: WebSocket | null;
     subscribedProducts: string[];
 }
 
-interface PriceData {
-    [key: string]: { bid: string; ask: string; trade_id: string; side: string; best_bid_size: string; price: string; product_id: string; sequence: number; time: string; };
-}
 
 const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
-    console.log('subscribedProducts::: ', subscribedProducts);
     const { prices }: any = useContext(MyContext);
-    console.log('prices::: ', prices);
 
- 
     return (
         <div className="price-view">
             <h2>Price View</h2>
@@ -39,7 +31,7 @@ const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
                 </TableHeader>
 
                 <TableBody>
-                    {prices && subscribedProducts.map((item) => (
+                    {prices && Object.keys(prices).length ? subscribedProducts.map((item) => (
                         <TableRow key={item}>
                             <TableCell >{prices[item]?.trade_id}</TableCell>
                             <TableCell>None</TableCell>
@@ -51,7 +43,11 @@ const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
                             <TableCell >{prices[item]?.sequence}</TableCell>
                             <TableCell >{prices[item]?.time}</TableCell>
                         </TableRow>
-                    ))}
+                    )) :
+                        <TableRow className="text-center" >
+                            <TableCell colSpan={9}>No data yet</TableCell>
+                        </TableRow>
+                    }
                 </TableBody>
             </Table>
         </div>
@@ -59,10 +55,3 @@ const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
 };
 
 export default PriceView;
-{/* <ul>
-    {subscribedProducts.map((product) => (
-        <li key={product}>
-            {product}: Bid - {prices[product]?.bid || "N/A"} / Ask - {prices[product]?.ask || "N/A"}
-        </li>
-    ))}
-</ul> */}
