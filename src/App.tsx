@@ -9,10 +9,8 @@ const WebSocketComponent = () => {
 
   return (
     <section className="text-gray-400 items-center justify-center  body-font">
-
       <div className="container  px-5 py-24 mx-auto">
         <SystemStatus isConnected={isConnected} />
-
         <div className="flex flex-col  w-full mb-12">
           <SubscriptionComponent />
         </div>
@@ -20,7 +18,6 @@ const WebSocketComponent = () => {
           <PriceView ws={ws.current} subscribedProducts={subscribedProducts} />
         </div>
       </div>
-
     </section>
   );
 };
