@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import socket from '../connections/socket';
+import toast from 'react-hot-toast';
 
 export const MyContext = createContext(null);
 
@@ -16,7 +17,7 @@ export const MyContextProvider = ({ children }) => {
 
         socket.on('ticker', (data) => {
 
-            if (data.type === "ticker" ) {
+            if (data.type === "ticker") {
                 setPrices((prevPrices) => ({
                     ...prevPrices,
                     [data.product_id]: {
@@ -35,11 +36,19 @@ export const MyContextProvider = ({ children }) => {
 
         });
 
+        socket.on('success-response', (data) => {
+            toast.success(`${data?.message}`);
+        });
+
+        socket.on('error-response', (data) => {
+            toast.success(`${data?.message}`);
+        });
+
         socket.on('disconnect', () => {
             console.log('Socket disconnected');
             setIsConnected(false);
         });
-
+        
         socket.on('connect_error', (error) => {
             console.log('Socket connection error:', error);
             setIsConnected(false);
@@ -50,7 +59,7 @@ export const MyContextProvider = ({ children }) => {
             socket.off('disconnect');
             socket.off('connect_error');
         };
-    }, [subscribedProducts]);
+    }, []);
 
     const subscribe = (product) => {
         setSubscribedProducts([...subscribedProducts, product]);

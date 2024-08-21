@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { TableRow, TableHeaderCell, TableHeader, TableCell, TableBody, Table, } from 'semantic-ui-react'
 import { MyContext } from "../context";
-
+import moment from 'moment';
 interface PriceViewProps {
     ws: WebSocket | null;
     subscribedProducts: string[];
@@ -19,8 +19,8 @@ const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
                 <TableHeader>
                     <TableRow>
                         <TableHeaderCell>Trade id</TableHeaderCell>
-                        <TableHeaderCell>Marker Order Id</TableHeaderCell>
-                        <TableHeaderCell>Taker Order Id</TableHeaderCell>
+                        <TableHeaderCell>Bid</TableHeaderCell>
+                        <TableHeaderCell>Ask</TableHeaderCell>
                         <TableHeaderCell>Side</TableHeaderCell>
                         <TableHeaderCell>Size</TableHeaderCell>
                         <TableHeaderCell>Price</TableHeaderCell>
@@ -34,14 +34,19 @@ const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
                     {prices && Object.keys(prices).length ? subscribedProducts.map((item) => (
                         <TableRow key={item}>
                             <TableCell >{prices[item]?.trade_id}</TableCell>
-                            <TableCell>None</TableCell>
-                            <TableCell>None</TableCell>
-                            <TableCell >{prices[item]?.side}</TableCell>
+                            <TableCell>{prices[item]?.bid}</TableCell>
+                            <TableCell>{prices[item]?.ask}</TableCell>
+                            <TableCell className={prices[item]?.side === "buy" ? "bg-green-500 text-white" : "bg-red-500 text-white"}
+                            >{prices[item]?.side}</TableCell>
                             <TableCell >{prices[item]?.best_bid_size}</TableCell>
                             <TableCell >{prices[item]?.price}</TableCell>
                             <TableCell >{prices[item]?.product_id}</TableCell>
                             <TableCell >{prices[item]?.sequence}</TableCell>
-                            <TableCell >{prices[item]?.time}</TableCell>
+                            <TableCell >{moment(prices[item]?.time).format('DD/MM/YYYY')} <br />
+                                {moment(prices[item]?.time).format('HH:mm:ss')}
+                            </TableCell>
+
+                            {/* <TableCell >{prices[item]?.time}</TableCell> */}
                         </TableRow>
                     )) :
                         <TableRow className="text-center" >
