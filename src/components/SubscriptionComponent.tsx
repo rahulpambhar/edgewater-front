@@ -6,12 +6,12 @@ const SubscriptionComponent: React.FC = () => {
     const { subscribedProducts, unsubscribe, subscribe }: any = useContext(MyContext);
     const [isConnected, setIsConnected] = useState(true); 
 
+    // subscribe to products
     const handleSubscribe = (product: string) => {
-        if (!subscribedProducts.includes(product)) {
-            subscribe(product);
-        }
+        !subscribedProducts.includes(product) && subscribe(product);
     };
 
+    // unsubscribe from products
     const handleUnsubscribe = (product: string) => {
         unsubscribe(product);
     };

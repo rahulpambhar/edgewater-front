@@ -9,14 +9,15 @@ export const MyContextProvider = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false);
     const [prices, setPrices] = useState({});
 
+
     useEffect(() => {
         socket.on('connect', () => {
             console.log('Socket connected');
             setIsConnected(true);
         });
 
+        // data from socket
         socket.on('ticker', (data) => {
-
             if (data.type === "ticker") {
                 setPrices((prevPrices) => ({
                     ...prevPrices,
@@ -48,7 +49,7 @@ export const MyContextProvider = ({ children }) => {
             console.log('Socket disconnected');
             setIsConnected(false);
         });
-        
+
         socket.on('connect_error', (error) => {
             console.log('Socket connection error:', error);
             setIsConnected(false);
@@ -61,6 +62,7 @@ export const MyContextProvider = ({ children }) => {
         };
     }, []);
 
+    // subscribe to products
     const subscribe = (product) => {
         setSubscribedProducts([...subscribedProducts, product]);
         const msg = {
@@ -70,6 +72,7 @@ export const MyContextProvider = ({ children }) => {
         socket.emit('subscribe', msg);
     };
 
+    // unsubscribe from products
     const unsubscribe = (product) => {
         setSubscribedProducts(subscribedProducts.filter((p) => p !== product));
         const updatedPrices = { ...prices };
