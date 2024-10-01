@@ -18,3 +18,9 @@ export interface SubscribedProducts {
     tradeId: number;
     lastSize: string;
 }
+
+export interface SignUpFormValues {
+    email: string;
+    password: string;
+    username: string;
+  }

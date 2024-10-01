@@ -1,9 +1,9 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
-import SubscriptionComponent from "./components/SubscriptionComponent";
-import PriceView from "./components/PriceView";
-import { MyContext } from './context/index.jsx';
-import SystemStatus from "./components/SystemStatus";
-const WebSocketComponent = () => {
+import SubscriptionComponent from "../components/SubscriptionComponent";
+import PriceView from "../components/PriceView";
+import { MyContext } from '../context/index.jsx';
+import SystemStatus from "../components/SystemStatus";
+const SoketTest = () => {
   const ws = useRef<WebSocket | null>(null);
   const { isConnected, subscribedProducts }: any = useContext(MyContext);
 
@@ -22,5 +22,5 @@ const WebSocketComponent = () => {
   );
 };
 
-export default WebSocketComponent;
+export default SoketTest;
 

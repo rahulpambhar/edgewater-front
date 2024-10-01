@@ -11,6 +11,53 @@ interface PriceViewProps {
 const PriceView: React.FC<PriceViewProps> = ({ ws, subscribedProducts }) => {
     const { prices }: any = useContext(MyContext);
 
+
+
+    const [tickerData, setTickerData] = useState(null);
+
+    useEffect(() => {
+        // Create a new WebSocket instance
+        const socket = new WebSocket('wss://ws-feed.pro.coinbase.com');
+
+        socket.onopen = () => {
+            console.log('WebSocket connection opened');
+
+            const subscriptionMessage = JSON.stringify({
+                type: "subscribe",
+                channels: [{ name: "ticker", product_ids: ["ETH-USD"] }]
+            });
+            console.log('Sending subscription message:', subscriptionMessage);
+            socket.send(subscriptionMessage);
+        };
+
+        socket.onmessage = (event) => {
+            console.log('Received message:', event.data);
+            const data = JSON.parse(event.data);
+
+            if (data.type === "ticker") {
+                console.log('Ticker data:', data);
+                setTickerData(data);
+            }
+        };
+
+        socket.onmessage = (event) => {
+            console.log('Received message:', event.data);
+        };
+        
+        socket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+        
+        socket.onclose = (event) => {
+            console.log('WebSocket connection closed:', event);
+        };
+
+        return () => {
+            console.log('Closing WebSocket connection');
+            socket.close();
+        };
+    }, []);
+
     return (
         <div className="price-view">
             <h2>Price View</h2>
